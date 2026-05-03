@@ -1,0 +1,4 @@
+# Image size
+Small image: 256x256
+Medium image: 1200x793
+Big image: 6000x4000
