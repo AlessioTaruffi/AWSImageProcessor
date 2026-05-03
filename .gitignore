@@ -1,0 +1,36 @@
+# Credenziali e chiavi - MAI committare
+*.pem
+*.key
+cipa-lab
+cipa-lab.pub
+.aws/
+.env
+*.tfvars
+secrets/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+venv/
+.venv/
+*.egg-info/
+.pytest_cache/
+
+# AWS Lambda packaging
+*.zip
+package/
+
+# Risultati grezzi (versionati a parte se necessario)
+results/raw/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
