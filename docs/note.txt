@@ -2,3 +2,7 @@
 Small image: 256x256
 Medium image: 1200x793
 Big image: 6000x4000
+
+# test_processor.py 
+
+test_processor.py  può essere usato come base per costruire un tool che simula il carico varibile degli utenti in modo da valutare lo scailing e le performance dell'applicazione 
