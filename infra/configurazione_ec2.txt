@@ -1,0 +1,22 @@
+sudo apt update
+sudo apt install python3-pip python3-venv awscli -y
+
+# Crea la cartella dell'app e il virtualenv
+mkdir -p ~/my-flask-app
+cd ~/my-flask-app
+python3 -m venv venv
+
+
+sudo nano /etc/systemd/system/flaskapp.service
+
+Associamo ruolo LabRole all'istanza ec2
+
+
+sudo systemctl daemon-reload
+sudo systemctl enable flaskapp
+sudo systemctl start flaskapp
+
+Aggiunta regola che permette sulla porta 80 HTTP da ovunque 
+
+
+Devo creare uno script che consenta in modo automatico ogni tot tempo (es. 1 ora) di controllare se dei file su s3 sono aggiornati e in caso positivo deve scaricarli e riavviare il servizio  flask
