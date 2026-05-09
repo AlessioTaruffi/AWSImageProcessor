@@ -29,17 +29,45 @@ SQS_QUEUE_ARN="arn:aws:sqs:${REGION}:${ACCOUNT_ID}:ImageProcessingQueue.fifo"
 # ARN aggiornato qui: https://api.klayers.cloud/api/v2/p3.11/layer/latest/us-east-1/Pillow
 PILLOW_LAYER_ARN="arn:aws:lambda:${REGION}:770693421928:layer:Klayers-p311-Pillow:8"
 
-LAMBDA_NAME="cipa-image-processor"
+LAMBDA_NAME="handler"
 LAMBDA_DIR="lambda-processor"
 
 # =========================================
-# Build
+# Detect Python: priorità a `py` (Windows) per evitare l'alias Microsoft Store
+# =========================================
+PY=""
+for candidate in py python3 python; do
+    if command -v "$candidate" >/dev/null 2>&1; then
+        # Verifica che funzioni davvero (non un alias Microsoft Store)
+        if "$candidate" --version >/dev/null 2>&1; then
+            PY="$candidate"
+            break
+        fi
+    fi
+done
+ 
+if [[ -z "$PY" ]]; then
+    echo "ERROR: Python non trovato. Installalo da python.org o disabilita l'app alias dal Microsoft Store."
+    exit 1
+fi
+echo ">>> Using Python: $PY"
+
+
+# =========================================
+# Build dello ZIP usando Python (cross-platform)
 # =========================================
 echo ">>> Building $LAMBDA_NAME..."
 cd "$LAMBDA_DIR"
 rm -f function.zip
-zip -q function.zip handler.py processor.py
+"$PY" -c "
+import zipfile
+with zipfile.ZipFile('function.zip', 'w', zipfile.ZIP_DEFLATED) as z:
+    z.write('handler.py')
+    z.write('processor.py')
+print('  function.zip created')
+"
 cd ..
+
 
 # =========================================
 # Deploy (create or update)
