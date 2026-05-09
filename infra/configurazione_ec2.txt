@@ -19,4 +19,3 @@ sudo systemctl start flaskapp
 Aggiunta regola che permette sulla porta 80 HTTP da ovunque 
 
 
-Devo creare uno script che consenta in modo automatico ogni tot tempo (es. 1 ora) di controllare se dei file su s3 sono aggiornati e in caso positivo deve scaricarli e riavviare il servizio  flask
