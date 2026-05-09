@@ -1,0 +1,21 @@
+sudo apt update
+sudo apt install python3-pip python3-venv awscli -y
+
+# Crea la cartella dell'app e il virtualenv
+mkdir -p ~/my-flask-app
+cd ~/my-flask-app
+python3 -m venv venv
+
+
+sudo nano /etc/systemd/system/flaskapp.service
+
+Associamo ruolo LabRole all'istanza ec2
+
+
+sudo systemctl daemon-reload
+sudo systemctl enable flaskapp
+sudo systemctl start flaskapp
+
+Aggiunta regola che permette sulla porta 80 HTTP da ovunque 
+
+

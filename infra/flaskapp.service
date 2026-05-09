@@ -1,0 +1,29 @@
+[Unit]
+Description=Gunicorn instance to serve Flask
+After=network.target
+
+[Service]
+User=ubuntu
+Group=www-data
+WorkingDirectory=/home/ubuntu/my-flask-app
+
+# Permessi per la porta 80
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+CapabilityBoundingSet=CAP_NET_BIND_SERVICE
+
+# VARIABILI D'AMBIENTE (FONDAMENTALI)
+Environment="AWS_DEFAULT_REGION=us-east-1"
+Environment="PATH=/home/ubuntu/my-flask-app/venv/bin:/usr/local/bin:/usr/bin:/bin"
+
+# Pre-avvio
+ExecStartPre=/usr/bin/aws s3 sync s3://cipa-storage-850029407617 /home/ubuntu/my-flask-app
+ExecStartPre=/home/ubuntu/my-flask-app/venv/bin/pip install -r requirements.txt
+
+# Avvio Gunicorn
+ExecStart=/home/ubuntu/my-flask-app/venv/bin/gunicorn --workers 3 --bind 0.0.0.0:80 --log-level debug wsgi:app
+
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
