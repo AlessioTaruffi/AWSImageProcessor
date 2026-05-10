@@ -17,5 +17,5 @@ sudo systemctl enable flaskapp
 sudo systemctl start flaskapp
 
 Aggiunta regola che permette sulla porta 80 HTTP da ovunque 
-
+Aggiunta regola che permette sulla porta 5000 TCP connessione da ovunque 
 
