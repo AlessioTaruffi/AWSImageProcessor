@@ -1,12 +1,8 @@
-BASE_URL = "http://YOUR_LOAD_BALANCER_DNS"
+BASE_URL = "http://54.162.232.91/"
 
-UPLOAD_ENDPOINT = "/upload"
-RESIZE_ENDPOINT = "/resize"
-GRAYSCALE_ENDPOINT = "/grayscale"
-ROTATE_ENDPOINT = "/rotate"
-BLUR_ENDPOINT = "/blur"
-STATUS_ENDPOINT = "/job-status"
 
+PROCESS_ENDPOINT = "/process-image"
+RESULT_ENDPOINT = "/result"
 # immagini di test
 SMALL_IMAGE = "images/small.jpg"      # 21 KB
 MEDIUM_IMAGE = "images/medium.jpg"    # 159 KB
@@ -16,11 +12,18 @@ LARGE_IMAGE = "images/large.jpg"      # 7.8 MB
 POLL_INTERVAL = 5
 
 # workload per test autoscaling
+# WORKLOAD_PATTERN = [
+#     (60, 20),    # 1 minuto -> 20 utenti
+#     (120, 50),   # 2 minuti -> 50 utenti
+#     (120, 100),  # 2 minuti -> picco
+#     (60, 20)     # ritorno a carico basso
+# ]
+
 WORKLOAD_PATTERN = [
-    (60, 20),    # 1 minuto -> 20 utenti
-    (120, 50),   # 2 minuti -> 50 utenti
-    (120, 100),  # 2 minuti -> picco
-    (60, 20)     # ritorno a carico basso
+    (60, 1),    # 1 minuto -> 20 utenti
+    (120, 2),   # 2 minuti -> 50 utenti
+    (120, 5),  # 2 minuti -> picco
+    (60, 2)     # ritorno a carico basso
 ]
 
 # metriche globali
