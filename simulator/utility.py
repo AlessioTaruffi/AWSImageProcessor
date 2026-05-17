@@ -1,5 +1,5 @@
-from simulator.markov_states import UserState, TRANSITIONS
-from simulator.config import *
+from markov_states import UserState, TRANSITIONS
+from config import *
 import random
 
 def choose_next_state(current_state):

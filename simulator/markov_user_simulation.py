@@ -1,7 +1,6 @@
-from simulator.markov_states import UserState
-from simulator.api_requests import *
-from simulator.config import *
-from simulator.utility import choose_next_state
+from markov_states import UserState
+from api_requests import *
+from utility import choose_next_state
 import asyncio
 
 async def simulated_user(session, user_id):

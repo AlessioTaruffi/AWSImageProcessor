@@ -2,9 +2,9 @@ import asyncio
 import time
 import aiohttp
 
-from simulator.config import WORKLOAD_PATTERN
-from simulator.markov_user_simulation import simulated_user
-from simulator.pure_stress_simulation import stress_request 
+from config import WORKLOAD_PATTERN
+from markov_user_simulation import simulated_user
+from pure_stress_simulation import stress_request 
 
 async def run_workload(mode):
     timeout = aiohttp.ClientTimeout(total=300)

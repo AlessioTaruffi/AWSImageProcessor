@@ -1,12 +1,12 @@
-BASE_URL = "http://54.162.232.91/"
-
+BASE_URL = "http://32.196.131.57/"
 
 PROCESS_ENDPOINT = "/process-image"
 RESULT_ENDPOINT = "/result"
+
 # immagini di test
 SMALL_IMAGE = "images/small.jpg"      # 21 KB
 MEDIUM_IMAGE = "images/medium.jpg"    # 159 KB
-LARGE_IMAGE = "images/large.jpg"      # 7.8 MB
+LARGE_IMAGE = "images/big.jpg"      # 7.8 MB
 
 # polling ogni 5 secondi
 POLL_INTERVAL = 5
@@ -20,10 +20,10 @@ POLL_INTERVAL = 5
 # ]
 
 WORKLOAD_PATTERN = [
-    (60, 1),    # 1 minuto -> 20 utenti
-    (120, 2),   # 2 minuti -> 50 utenti
-    (120, 5),  # 2 minuti -> picco
-    (60, 2)     # ritorno a carico basso
+    (10, 1),    # 1 minuto -> 20 utenti
+    (20, 2),   # 2 minuti -> 50 utenti
+    (20, 5),  # 2 minuti -> picco
+    (10, 2)     # ritorno a carico basso
 ]
 
 # metriche globali
