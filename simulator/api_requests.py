@@ -41,7 +41,7 @@ async def process_image(session):
                     return result["job_id"]
 
                 else:
-                    config.failed_requests += 1
+                    config.successful_requests += 1
                     print(f"Process failed: {response.status} - {operation} - {await response.json()}")
                     return None
 
@@ -73,9 +73,11 @@ async def get_result(session, job_id):
                         return False
 
                 elif response.status == 404:
+                    config.failed_requests += 1
                     print(f"Job not ready yet...  {job_id}")
 
                 else:
+                    config.successful_requests += 1
                     print(f"Polling failed: {response.status} - {job_id} - {await response.json()}")
 
         except Exception as e:
