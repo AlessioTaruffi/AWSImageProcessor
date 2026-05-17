@@ -1,3 +1,4 @@
+from config import BASE_URL, PROCESS_ENDPOINT, RESULT_ENDPOINT, POLL_INTERVAL
 import config
 from utility import *
 import asyncio
@@ -41,7 +42,7 @@ async def process_image(session):
 
                 else:
                     config.failed_requests += 1
-                    print(f"Process failed: {response.status}")
+                    print(f"Process failed: {response.status} - {operation} - {await response.json()}")
                     return None
 
     except Exception as e:
@@ -75,8 +76,7 @@ async def get_result(session, job_id):
                     print(f"Job not ready yet...  {job_id}")
 
                 else:
-                    config.failed_requests += 1
-                    print(f"Polling failed: {response.status} - {job_id}")
+                    print(f"Polling failed: {response.status} - {job_id} - {await response.json()}")
 
         except Exception as e:
             print(f"Result polling error: {e}")
