@@ -1,5 +1,5 @@
-from simulator.markov_states import UserState, TRANSITIONS
-from simulator.config import *
+from markov_states import UserState, TRANSITIONS
+from config import *
 import random
 
 def choose_next_state(current_state):
@@ -16,13 +16,6 @@ def choose_next_state(current_state):
 
 
 def choose_image():
-    """
-    Distribuzione immagini:
-    50% piccole
-    30% medie
-    20% grandi
-    """
-
     r = random.random()
 
     if r < 0.5:
@@ -31,3 +24,36 @@ def choose_image():
         return MEDIUM_IMAGE
     else:
         return LARGE_IMAGE
+
+def choose_operation():
+    """
+    resize -> 40%
+    grayscale -> 30%
+    rotate -> 20%
+    blur -> 10%
+    """
+
+    r = random.random()
+
+    if r < 0.4:
+        return {
+            "op": "resize",
+            "width": random.choice([512, 1024, 2048])
+        }
+
+    elif r < 0.7:
+        return {
+            "op": "grayscale"
+        }
+
+    elif r < 0.9:
+        return {
+            "op": "rotate",
+            "angle": random.choice([90, 180, 270])
+        }
+
+    else:
+        return {
+            "op": "blur",
+            "radius": random.choice([2, 5, 8])
+        }

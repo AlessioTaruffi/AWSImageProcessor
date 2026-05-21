@@ -1,95 +1,87 @@
-from simulator.config import *
-from simulator.utility import choose_image
+from config import BASE_URL, PROCESS_ENDPOINT, RESULT_ENDPOINT, POLL_INTERVAL
+import config
+from utility import *
 import asyncio
 import aiohttp
+import json
 
-async def upload_image(session):
-    global total_requests, successful_requests, failed_requests
-
+async def process_image(session):
     image_path = choose_image()
+    operation = choose_operation()
 
     try:
         with open(image_path, "rb") as f:
             data = aiohttp.FormData()
+
             data.add_field(
-                "file",
+                "image",
                 f,
                 filename=image_path,
                 content_type="image/jpeg"
             )
 
-            total_requests += 1
+            data.add_field(
+                "operation",
+                json.dumps(operation)
+            )
+
+            config.total_requests += 1
 
             async with session.post(
-                BASE_URL + UPLOAD_ENDPOINT,
+                BASE_URL + PROCESS_ENDPOINT,
                 data=data
             ) as response:
 
-                if response.status == 200:
-                    successful_requests += 1
+                if response.status == 202:
+                    config.successful_requests += 1
                     result = await response.json()
+
+                    print(f"Created job - {operation} - {result['job_id']}")
+
                     return result["job_id"]
 
-                failed_requests += 1
-                return None
-
-    except Exception as e:
-        print(f"Upload error: {e}")
-        failed_requests += 1
-        return None
-
-
-async def process_image(session, endpoint, job_id):
-    global total_requests, successful_requests, failed_requests
-
-    try:
-        total_requests += 1
-
-        async with session.post(
-            BASE_URL + endpoint,
-            json={"job_id": job_id}
-        ) as response:
-
-            if response.status == 200:
-                successful_requests += 1
-                return True
-
-            failed_requests += 1
-            return False
+                else:
+                    config.successful_requests += 1
+                    print(f"Process failed: {response.status} - {operation} - {await response.json()}")
+                    return None
 
     except Exception as e:
         print(f"Processing error: {e}")
-        failed_requests += 1
-        return False
+        config.failed_requests += 1
+        return None
 
 
-async def poll_status(session, job_id):
-    global total_requests, successful_requests, failed_requests
-
+async def get_result(session, job_id):
     while True:
         try:
-            total_requests += 1
+            config.total_requests += 1
 
             async with session.get(
-                BASE_URL + STATUS_ENDPOINT,
-                params={"job_id": job_id}
+                f"{BASE_URL}{RESULT_ENDPOINT}/{job_id}"
             ) as response:
 
                 if response.status == 200:
-                    successful_requests += 1
+                    config.successful_requests += 1
                     result = await response.json()
 
-                    if result["status"] == "completed":
+                    if result.get("status") == "completed":
+                        print(f"Job completed {job_id}")
                         return True
 
-                    elif result["status"] == "failed":
+                    elif result.get("status") == "failed":
+                        print(f"Job failed {job_id}")
                         return False
 
+                elif response.status == 404:
+                    config.failed_requests += 1
+                    print(f"Job not ready yet...  {job_id}")
+
                 else:
-                    failed_requests += 1
+                    config.successful_requests += 1
+                    print(f"Polling failed: {response.status} - {job_id} - {await response.json()}")
 
         except Exception as e:
-            print(f"Polling error: {e}")
-            failed_requests += 1
+            print(f"Result polling error: {e}")
+            config.failed_requests += 1
 
         await asyncio.sleep(POLL_INTERVAL)

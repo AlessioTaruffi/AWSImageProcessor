@@ -2,15 +2,22 @@ import asyncio
 import time
 import aiohttp
 
-from simulator.config import WORKLOAD_PATTERN
-from simulator.markov_user_simulation import simulated_user
-from simulator.pure_stress_simulation import stress_request 
+from config import WORKLOAD_PATTERN
+from markov_user_simulation import simulated_user
+from pure_stress_simulation import stress_request 
 
 async def run_workload(mode):
-    async with aiohttp.ClientSession() as session:
+    timeout = aiohttp.ClientTimeout(total=300)
+
+    async with aiohttp.ClientSession(
+        timeout=timeout
+    ) as session:
 
         for duration, users in WORKLOAD_PATTERN:
-            print(f"\nRunning {users} users for {duration} seconds")
+            print(
+                f"\nRunning {users} users "
+                f"for {duration} seconds"
+            )
 
             start_time = time.time()
 
@@ -30,5 +37,4 @@ async def run_workload(mode):
                         )
 
                 await asyncio.gather(*tasks)
-
-                await asyncio.sleep(1)
+                await asyncio.sleep(0.1)

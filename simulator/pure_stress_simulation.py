@@ -1,19 +1,9 @@
-from simulator.api_requests import upload_image
-from simulator.config import *
-from simulator.markov_user_simulation import process_image
-import random
+from api_requests import get_result
+from config import *
+from markov_user_simulation import process_image
 
 async def stress_request(session):
-    job_id = await upload_image(session)
+    job_id = await process_image(session)
 
-    if not job_id:
-        return
-
-    operation = random.choice([
-        RESIZE_ENDPOINT,
-        GRAYSCALE_ENDPOINT,
-        ROTATE_ENDPOINT,
-        BLUR_ENDPOINT
-    ])
-
-    await process_image(session, operation, job_id)
+    if job_id:
+        await get_result(session, job_id)
