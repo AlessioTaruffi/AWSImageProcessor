@@ -2,6 +2,10 @@ from markov_states import UserState, TRANSITIONS
 from config import *
 import random
 
+'''
+Questo modulo contiene funzioni di utilità per il simulatore, tra cui la scelta dello stato successivo dell'utente e la selezione casuale di immagini e operazioni da eseguire.
+'''
+
 def choose_next_state(current_state):
     transitions = TRANSITIONS[current_state]
     rand = random.random()

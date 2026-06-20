@@ -5,6 +5,14 @@ import asyncio
 import aiohttp
 import json
 
+'''
+Questo modulo contiene le funzioni per interagire con l'API del servizio di elaborazione immagini.
+Le funzioni principali sono:
+- process_image: invia un'immagine al servizio per l'elaborazione e restituisce l'ID del job creato.
+- get_result: esegue il polling per verificare lo stato del job e restituisce il risultato finale quando disponibile.
+Le funzioni gestiscono anche il conteggio delle richieste totali, riuscite e fallite, aggiornando le metriche globali definite in config.py.
+'''
+
 async def process_image(session):
     image_path = choose_image()
     operation = choose_operation()

@@ -3,6 +3,9 @@ from api_requests import *
 from utility import choose_next_state
 import asyncio
 
+'''
+Questo modulo implementa la simulazione dell'utente basata su un modello di Markov.
+'''
 async def simulated_user(session, user_id):
     state = UserState.START
 

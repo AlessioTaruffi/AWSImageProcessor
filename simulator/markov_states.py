@@ -1,5 +1,9 @@
 from enum import Enum
 
+'''
+Questo modulo definisce gli stati dell'utente e le transizioni tra di essi per il simulatore.
+'''
+
 class UserState(Enum):
     START = 1
     PROCESS_IMAGE = 2

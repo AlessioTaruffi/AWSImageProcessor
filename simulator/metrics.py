@@ -1,5 +1,9 @@
 import config
 
+'''
+Questo modulo contiene la funzione per stampare le metriche raccolte durante l'esecuzione del simulatore.
+'''
+
 def print_metrics():
     print("\n========= RESULTS =========")
     print(f"Total requests: {config.total_requests}")
