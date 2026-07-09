@@ -35,10 +35,6 @@ $ip = aws ec2 describe-instances `
   --query "Reservations[0].Instances[0].PublicIpAddress" `
   --output text
 
-#ip = 54.172.163.153 ssh -i "D:\Users\Patrizio\Desktop\Patrizio\uni\magistrale\CloudComputing\project\labsuser.pem" ubuntu@54.172.163.153
-
-
-
   # Comando per aprire la porta 22 in entrata da tutti: porta SSH -> Sennò la connessione ssh fallirà
   aws ec2 authorize-security-group-ingress `
   --group-name default `
@@ -48,10 +44,10 @@ $ip = aws ec2 describe-instances `
   --region us-east-1
 
   # Aggiunge il permesso di sola lettura per il tuo utente corrente per la chiave per fare la sessione ssh
-  icacls "D:\Users\Patrizio\Desktop\Patrizio\uni\magistrale\CloudComputing\project\labsuser.pem" /grant:r "$($env:USERNAME):(R)"
+  icacls "PathPem\labsuser.pem" /grant:r "$($env:USERNAME):(R)"
 
   # Collegarsi alla sessione remota
-  ssh -i "D:\Users\Patrizio\Desktop\Patrizio\uni\magistrale\CloudComputing\project\labsuser.pem" ubuntu@ip istanza preso prima
+  ssh -i "PathPem\labsuser.pem" ubuntu@ip istanza preso prima
 
   # Eliminare istanza ec2
   aws ec2 terminate-instances --instance-ids "i-0dde53c13b856d399"
@@ -68,10 +64,7 @@ $ip = aws ec2 describe-instances `
   # Ottenere nomi chiave ssh
   aws ec2 describe-key-pairs --query "KeyPairs[*].KeyName" --output table
 
-
   # Ami di riferimento ami-0cc71e6aadb380f5c
-
-  # Lancia nuova ec2 da istanza: nuova istanza ec2 creata (secondary): i-0b96ee8ac4ef42b84 34.207.232.89
   # aws ec2 run-instances --image-id ami-0cc71e6aadb380f5c --count 1 --instance-type t4g.micro --key-name vockey --security-group-ids sg-00df9675279784ad2 --iam-instance-profile Name=LabInstanceProfile --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=Primary}]"
 
   aws ec2 run-instances ^

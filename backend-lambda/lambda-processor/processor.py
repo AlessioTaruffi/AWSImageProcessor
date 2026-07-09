@@ -25,18 +25,14 @@ from PIL import Image, ImageFilter
 class ProcessorError(Exception):
     """Base exception del modulo."""
 
-
 class UnknownOperationError(ProcessorError):
     """Sollevata se la pipeline contiene un'operazione non registrata."""
-
 
 class InvalidParametersError(ProcessorError):
     """Sollevata se i parametri di un'operazione sono mancanti o invalidi."""
 
-
 class ImageProcessingError(ProcessorError):
     """Sollevata se Pillow fallisce durante una trasformazione."""
-
 
 # ---------------------------------------------------------------------------
 # Operazioni

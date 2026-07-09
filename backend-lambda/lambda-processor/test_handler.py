@@ -48,7 +48,7 @@ def test_processor_happy_path():
     out_img = Image.open(BytesIO(out["Body"].read()))
     # Resize a width=100 mantiene aspect ratio: 200x200 → 100x100
     assert out_img.size == (100, 100), f"unexpected size {out_img.size}"
-    print("✓ Happy path SUCCESS")
+    print("Happy path SUCCESS")
     print(f"  output size: {out_img.size}")
 
 
@@ -76,9 +76,9 @@ def test_rotate_clockwise():
 
     out = s3.get_object(Bucket="cipa-test-bucket", Key="outputs/job-rot.jpg")
     out_img = Image.open(BytesIO(out["Body"].read()))
-    # 200x100 ruotato 90° → 100x200
-    assert out_img.size == (100, 200), f"unexpected size after 90° rotation: {out_img.size}"
-    print("✓ Rotate 90° clockwise SUCCESS")
+   
+    assert out_img.size == (100, 200), f"unexpected size after 90 deg rotation: {out_img.size}"
+    print("Rotate 90 deg clockwise SUCCESS")
     print(f"  200x100 → {out_img.size}")
 
 
@@ -112,7 +112,7 @@ def test_pipeline_all_4_ops():
     out = s3.get_object(Bucket="cipa-test-bucket", Key="outputs/job-all.jpg")
     out_img = Image.open(BytesIO(out["Body"].read()))
     out_img.verify()
-    print("✓ Pipeline all-4-ops SUCCESS")
+    print("Pipeline all-4-ops SUCCESS")
     print(f"  final size: {out_img.size}")
 
 
@@ -139,7 +139,7 @@ def test_bad_request_no_retry():
 
     objs = s3.list_objects_v2(Bucket="cipa-test-bucket", Prefix="outputs/")
     assert objs.get("KeyCount", 0) == 0, "non doveva esserci output"
-    print("✓ Bad request SUCCESS (no retry, no output)")
+    print("Bad request SUCCESS (no retry, no output)")
 
 
 @mock_aws
@@ -163,7 +163,7 @@ def test_missing_required_param():
     importlib.reload(handler)
     result = handler.lambda_handler(sqs_event, None)
     assert result == {"batchItemFailures": []}, "non deve fare retry su bad request"
-    print("✓ Missing required param SUCCESS (rejected without retry)")
+    print("Missing required param SUCCESS (rejected without retry)")
 
 
 if __name__ == "__main__":

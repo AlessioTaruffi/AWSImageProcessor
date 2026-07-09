@@ -87,8 +87,6 @@ def get_result(job_id):
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
-
-    # per mnandare richiesta: curl -X POST http://52.90.203.248/process-image -F "image=@D:\Users\Patrizio\Desktop\colosseo.jpg" -F "operation={\"op\": \"resize\", \"width\": 1024}"
-    # per ottenere risultato: curl -X GET http://52.90.203.248/result/18bc970d-ced4-42eb-8076-929f480ac0e1 (si usa il job_id restituito dalla POST per recuperare l'url dell'immagine elaborata)
-    # curl -X POST http://54.83.161.69/process-image -F "image=@D:\Users\Patrizio\Desktop\colosseo.jpg" -F "operation={\"op\": \"rotate\", \"angle\": 90}"
+  
+    # curl -X POST http://54.83.161.69/process-image -F "image=@PathImmagine\colosseo.jpg" -F "operation={\"op\": \"rotate\", \"angle\": 90}"
     # curl -X GET http://54.83.161.69/result/0f47e82a-5471-4c0b-8fcf-b981e7f20494

@@ -23,10 +23,7 @@ from pathlib import Path
 
 from processor import process_image
 
-
-# ---------------------------------------------------------------------------
 # Configurazione
-# ---------------------------------------------------------------------------
 
 REPETITIONS = 5  # numero di run per ogni (operazione, immagine)
 TEST_IMAGES_DIR = Path(__file__).parent / "test_images"
@@ -34,7 +31,7 @@ RESULTS_DIR = Path(__file__).parent.parent / "results"
 RESULTS_DIR.mkdir(exist_ok=True)
 RESULTS_FILE = RESULTS_DIR / "local_benchmark.csv"
 
-# Operazioni e pipeline da misurare. Estendere a piacere.
+# Operazioni e pipeline da misurare
 BENCHMARK_CASES = [
     ("resize_1024", [{"op": "resize", "width": 1024}]),
     ("grayscale", [{"op": "grayscale"}]),
@@ -53,10 +50,7 @@ BENCHMARK_CASES = [
     ),
 ]
 
-
-# ---------------------------------------------------------------------------
 # Esecuzione
-# ---------------------------------------------------------------------------
 
 def measure(image_bytes: bytes, operations: list[dict]) -> float:
     """Esegue process_image() e ritorna il tempo in millisecondi."""
@@ -72,7 +66,7 @@ def main():
     for name in ["small", "medium", "large"]:
         path = TEST_IMAGES_DIR / f"{name}.jpg"
         if not path.exists():
-            print(f"⚠️  {path} non trovato — saltato")
+            print(f" {path} non trovato — saltato")
             continue
         images[name] = path.read_bytes()
 
@@ -89,7 +83,7 @@ def main():
 
     for case_name, operations in BENCHMARK_CASES:
         for img_name, img_bytes in images.items():
-            # Warmup (un giro a vuoto, non conteggiato)
+            # Warmup
             try:
                 measure(img_bytes, operations)
             except Exception as e:
@@ -124,7 +118,7 @@ def main():
         writer.writeheader()
         writer.writerows(rows)
 
-    print(f"\n✓ Risultati salvati in {RESULTS_FILE}")
+    print(f"\nRisultati salvati in {RESULTS_FILE}")
 
 
 if __name__ == "__main__":

@@ -22,10 +22,7 @@ from processor import (
     ImageProcessingError,
 )
 
-
-# ---------------------------------------------------------------------------
 # Fixtures
-# ---------------------------------------------------------------------------
 
 TEST_IMAGES_DIR = Path(__file__).parent / "test_images"
 
@@ -53,10 +50,7 @@ def small_image_bytes() -> bytes:
         pytest.skip(f"{path} non trovato — aggiungere immagine reale per testare")
     return path.read_bytes()
 
-
-# ---------------------------------------------------------------------------
 # Test di base
-# ---------------------------------------------------------------------------
 
 def test_empty_pipeline_returns_valid_image(synthetic_image_bytes):
     """Una pipeline vuota deve comunque restituire un'immagine valida (re-encoded)."""
@@ -113,9 +107,7 @@ def test_edge_enhance_operation(synthetic_image_bytes):
     img.verify()
 
 
-# ---------------------------------------------------------------------------
 # Test di pipeline composte
-# ---------------------------------------------------------------------------
 
 def test_pipeline_multiple_operations(synthetic_image_bytes):
     """Una pipeline con più operazioni in cascata deve funzionare end-to-end."""
@@ -171,9 +163,7 @@ def test_composite_with_custom_pipeline(synthetic_image_bytes):
     assert img.size == (50, 50)
 
 
-# ---------------------------------------------------------------------------
 # Test di error handling
-# ---------------------------------------------------------------------------
 
 def test_unknown_operation_raises(synthetic_image_bytes):
     with pytest.raises(UnknownOperationError):
@@ -206,9 +196,7 @@ def test_operations_must_be_list(synthetic_image_bytes):
         process_image(synthetic_image_bytes, "not a list")  # type: ignore
 
 
-# ---------------------------------------------------------------------------
 # Test su immagini reali (skippati se i file non esistono)
-# ---------------------------------------------------------------------------
 
 def test_real_image_resize(small_image_bytes):
     """Smoke test su small.jpg reale."""

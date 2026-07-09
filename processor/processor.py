@@ -14,10 +14,7 @@ from typing import Any
 
 from PIL import Image, ImageFilter, ImageOps
 
-
-# ---------------------------------------------------------------------------
 # Eccezioni custom
-# ---------------------------------------------------------------------------
 
 class ProcessorError(Exception):
     """Base exception del modulo."""
@@ -35,10 +32,8 @@ class ImageProcessingError(ProcessorError):
     """Sollevata se Pillow fallisce durante una trasformazione."""
 
 
-# ---------------------------------------------------------------------------
 # Operazioni atomiche
 # Ogni operazione prende (Image, dict_di_parametri) e ritorna una nuova Image.
-# ---------------------------------------------------------------------------
 
 def _op_resize(img: Image.Image, params: dict[str, Any]) -> Image.Image:
     """Ridimensiona l'immagine. Accetta `width` e/o `height`.
@@ -114,10 +109,8 @@ def _op_composite(img: Image.Image, params: dict[str, Any]) -> Image.Image:
     return img
 
 
-# ---------------------------------------------------------------------------
 # Registry delle operazioni
 # Aggiungere qui nuove operazioni per renderle utilizzabili nelle pipeline.
-# ---------------------------------------------------------------------------
 
 OPERATIONS = {
     "resize": _op_resize,
@@ -128,9 +121,7 @@ OPERATIONS = {
 }
 
 
-# ---------------------------------------------------------------------------
 # API pubblica
-# ---------------------------------------------------------------------------
 
 def process_image(
     image_bytes: bytes,
@@ -167,7 +158,6 @@ def process_image(
 
     try:
         img = Image.open(BytesIO(image_bytes))
-        # Forziamo il caricamento immediato per intercettare subito file corrotti
         img.load()
     except Exception as e:
         raise ImageProcessingError(f"Impossibile aprire l'immagine: {e}") from e
@@ -194,7 +184,6 @@ def process_image(
             ) from e
 
     # Salvataggio: converte sempre in RGB per evitare problemi con JPEG
-    # (che non supporta canale alpha)
     output = BytesIO()
     try:
         if img.mode != "RGB":

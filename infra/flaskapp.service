@@ -11,11 +11,11 @@ WorkingDirectory=/home/ubuntu/my-flask-app
 AmbientCapabilities=CAP_NET_BIND_SERVICE
 CapabilityBoundingSet=CAP_NET_BIND_SERVICE
 
-# VARIABILI D'AMBIENTE (FONDAMENTALI)
+# VARIABILI D'AMBIENTE
 Environment="AWS_DEFAULT_REGION=us-east-1"
 Environment="PATH=/home/ubuntu/my-flask-app/venv/bin:/usr/local/bin:/usr/bin:/bin"
 
-# Pre-avvio - Scarica il codice dal bucket s3 solo i file che servono per avviare il server
+# Scarica il codice dal bucket s3 solo i file che servono per avviare il server
 ExecStartPre=/usr/bin/aws s3 sync s3://cipa-storage-850029407617 /home/ubuntu/my-flask-app
 ExecStartPre=/home/ubuntu/my-flask-app/venv/bin/pip install -r requirements.txt
 
